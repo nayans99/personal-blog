@@ -1,0 +1,1 @@
+Initialise db: flask --app flaskr init-db
