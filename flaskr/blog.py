@@ -41,7 +41,7 @@ def index():
     # Return posts in JSON format
     return jsonify(blogs=blog_list)
 
-@bp.route('/create', methods=['POST'])
+@bp.route('/blog/create', methods=['POST'])
 def create():
     title = request.form.get('title')
     body = request.form.get('body')
@@ -69,3 +69,24 @@ def create():
             cursor.close()
             db.close()
         return redirect(url_for('blog.index'))
+    
+@bp.route('/blog/<int:blog_id>')
+def getBlogById(blog_id):
+    db = get_db()
+    cursor = db.cursor()
+
+    # Execute SQL query to fetch posts
+    cursor.execute(
+        'SELECT id, title, body, created'
+        ' FROM blog'
+        ' WHERE id = %s', (blog_id,)
+    )
+
+    # Fetch all rows from the cursor
+    blog = cursor.fetchone()
+    # Close the cursor and database connection
+    cursor.close()
+    db.close()
+
+    # Return posts in JSON format
+    return jsonify(blog=blog)
