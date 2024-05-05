@@ -43,8 +43,10 @@ def index():
 
 @bp.route('/blog/create', methods=['POST'])
 def create():
-    title = request.form.get('title')
-    body = request.form.get('body')
+    data = request.get_json()
+
+    title = data.get('title')
+    body = data.get('body')
 
     error = None
 
